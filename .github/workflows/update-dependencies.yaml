@@ -2,6 +2,9 @@ name: Update dependencies
 concurrency: update-dependencies
 
 on:
+  schedule:
+    # Every day at midnight
+    - cron: "0 0 * * *"
   workflow_dispatch:
   issue_comment:
     types:
