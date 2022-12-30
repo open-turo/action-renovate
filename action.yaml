@@ -1,0 +1,199 @@
+name: GitHub Action Renovatebot
+description: GitHub Action that runs renovatebot with a very opinionated runner configuration
+inputs:
+  dry-run:
+    required: false
+    description: Whether to run the action in dry-run mode
+  artifactory-username:
+    required: false
+    description: Username to authenticate against a maven artifactory
+  artifactory-password:
+    required: false
+    description: Password to authenticate against a maven artifactory
+  artifactory-match-host:
+    required: false
+    description: A domain name, host name or base URL to match maven artifactory libraries with (see https://docs.renovatebot.com/configuration-options/#matchhost)
+  docker-username:
+    required: false
+    description: Username to authenticate against docker hub
+  docker-password:
+    required: false
+    description: Password to authenticate against docker hub
+  github-token:
+    required: true
+    description: GitHub token that can checkout the repository as well as create tags/releases against it. e.g. 'secrets.GITHUB_TOKEN'
+    default: ${{ github.token }}
+  log-level:
+    required: false
+    description: Log level to use for renovate
+    default: info
+  npm-token:
+    required: false
+    description: NPM token to use for authentication
+  npm-username:
+    required: false
+    description: Username to authenticate against the NPM registry
+  npm-password:
+    required: false
+    description: Password to authenticate against the NPM registry
+  npm-scope:
+    required: false
+    description: Scope of the packages to use the custom NPM authentication (e.g @open-turo)
+  npm-registry:
+    required: false
+    description: URL of the NPM registry to use the custom authentication for
+  terraform-token:
+    required: false
+    description: Token to authenticate against terraform registry
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Renovatebot
+      uses: renovatebot/github-action@v34.25.1
+      env:
+        LOG_LEVEL: ${{ inputs.log-level }}
+        RENOVATE_CONFIG: |
+          /**
+           * Return the NPM configuration if the NPM environment variables for NPM are set
+           * Configure renovate to authenticate against the specified NPM registry and create a .npmrc file
+           * that authenticates against the same registry for the specified scope.
+           */
+          function configureNpm() {
+            if (
+              process.env.RENOVATE_NPM_USERNAME &&
+              process.env.RENOVATE_NPM_PASSWORD &&
+              process.env.RENOVATE_NPM_AUTH_TOKEN &&
+              process.env.RENOVATE_NPM_REGISTRY &&
+              process.env.RENOVATE_NPM_SCOPE
+            ) {
+              return {
+                hostRules: [
+                  {
+                    hostType: "npm",
+                    matchHost: process.env.RENOVATE_NPM_HOST,
+                    username: process.env.RENOVATE_NPM_USERNAME,
+                    password: process.env.RENOVATE_NPM_PASSWORD,
+                  },
+                ],
+                name: "npm",
+                config: {
+                  npmrc: [
+                    `${process.env.RENOVATE_NPM_SCOPE}:registry=${process.env.RENOVATE_NPM_REGISTRY}`,
+                    `${process.env.RENOVATE_NPM_REGISTRY}:_auth=${process.env.RENOVATE_NPM_AUTH_TOKEN}`,
+                    `${process.env.RENOVATE_NPM_REGISTRY}:always-auth=true`,
+                  ].join("\n"),
+                },
+              };
+            }
+          }
+
+          /**
+           * Configure renovate to authenticate against the specified Artifactory registry
+           * if the environment variables are set
+           */
+          function configureArtifactory() {
+            if (
+              process.env.RENOVATE_ARTIFACTORY_USERNAME &&
+              process.env.RENOVATE_ARTIFACTORY_PASSWORD &&
+              process.env.RENOVATE_ARTIFACTORY_MATCH_HOST
+            ) {
+              return {
+                hostRules: [
+                  {
+                    hostType: "maven",
+                    matchHost: process.env.RENOVATE_ARTIFACTORY_MATCH_HOST,
+                    username: process.env.RENOVATE_ARTIFACTORY_USERNAME,
+                    password: process.env.RENOVATE_ARTIFACTORY_PASSWORD,
+                  },
+                ],
+                name: "artifactory",
+                config: {},
+              };
+            }
+          }
+
+          /**
+           * Configure renovate to authenticate against the default terraform registry
+           * if the environment variables are set
+           */
+          function configureTerraform() {
+            if (process.env.RENOVATE_TERRAFORM_TOKEN) {
+              return {
+                hostRules: [
+                  {
+                    hostType: "terraform-module",
+                    token: process.env.RENOVATE_TERRAFORM_TOKEN,
+                  },
+                ],
+                name: "terraform",
+                config: {},
+              };
+            }
+          }
+
+          /**
+           * Configure renovate to authenticate against docker hub if the environment variables are set
+           */
+          function configureDocker() {
+            if (
+              process.env.RENOVATE_DOCKERHUB_USERNAME &&
+              process.env.RENOVATE_DOCKERHUB_PASSWORD
+            ) {
+              return {
+                hostRules: [
+                  {
+                    hostType: "docker",
+                    username: process.env.RENOVATE_DOCKERHUB_USERNAME,
+                    password: process.env.RENOVATE_DOCKERHUB_PASSWORD,
+                  },
+                ],
+                name: "docker",
+                config: {},
+              };
+            }
+          }
+
+          // Only keep provider configuration that is set
+          const providers = [
+            configureArtifactory(),
+            configureNpm(),
+            configureDocker(),
+            configureTerraform(),
+          ].filter((provider) => provider !== undefined);
+
+          console.log(
+            `Enabled providers: [${providers.map(({ name }) => name).join(", ")}]`
+          );
+
+          module.exports = {
+            branchPrefix: "c/renovate_",
+            // Merge host rule for all the providers
+            hostRules: providers.flatMap((provider) => provider.hostRules),
+            logLevel: "info",
+            onboarding: false,
+            // Only run renovate against the repository the action is running on
+            repositories: [`${process.env.RENOVATE_REPOSITORY_NAME}`],
+            // Add any extra configuration a provider may need
+            ...providers.reduce(
+              (rules, provider) => ({ ...rules, ...provider.config }),
+              {}
+            ),
+          };
+        RENOVATE_ARTIFACTORY_MATCH_HOST: ${{ inputs.artifactory-match-host }}
+        RENOVATE_ARTIFACTORY_PASSWORD: ${{ inputs.artifactory-password }}
+        RENOVATE_ARTIFACTORY_USERNAME: ${{ inputs.artifactory-username }}
+        RENOVATE_DRY_RUN: ${{ inputs.dry-run }}
+        RENOVATE_DOCKERHUB_PASSWORD: ${{ inputs.docker-password }}
+        RENOVATE_DOCKERHUB_USERNAME: ${{ inputs.docker-username }}
+        RENOVATE_NPM_PASSWORD: ${{ inputs.npm-password }}
+        RENOVATE_NPM_REGISTRY: ${{ inputs.npm-registry }}
+        RENOVATE_NPM_SCOPE: ${{ inputs.npm-scope }}
+        RENOVATE_NPM_AUTH_TOKEN: ${{ inputs.npm-token }}
+        RENOVATE_NPM_USERNAME: ${{ inputs.npm-username }}
+        RENOVATE_REPOSITORY_NAME: ${{ github.repository }}
+        RENOVATE_TERRAFORM_TOKEN: ${{ inputs.terraform-token }}
+      with:
+        token: ${{ inputs.github-token }}
