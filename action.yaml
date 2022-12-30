@@ -51,11 +51,10 @@ runs:
   steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Renovatebot
-      uses: renovatebot/github-action@v34.25.1
-      env:
-        LOG_LEVEL: ${{ inputs.log-level }}
-        RENOVATE_CONFIG: |
+    - name: Create renovate config
+      shell: bash
+      run: |
+        cat << 'EOF' > "${{ runner.temp }}/renovate-config.js"
           /**
            * Return the NPM configuration if the NPM environment variables for NPM are set
            * Configure renovate to authenticate against the specified NPM registry and create a .npmrc file
@@ -182,6 +181,11 @@ runs:
               {}
             ),
           };
+        EOF
+    - name: Renovatebot
+      uses: renovatebot/github-action@v34.25.1
+      env:
+        LOG_LEVEL: ${{ inputs.log-level }}
         RENOVATE_ARTIFACTORY_MATCH_HOST: ${{ inputs.artifactory-match-host }}
         RENOVATE_ARTIFACTORY_PASSWORD: ${{ inputs.artifactory-password }}
         RENOVATE_ARTIFACTORY_USERNAME: ${{ inputs.artifactory-username }}
@@ -196,4 +200,5 @@ runs:
         RENOVATE_REPOSITORY_NAME: ${{ github.repository }}
         RENOVATE_TERRAFORM_TOKEN: ${{ inputs.terraform-token }}
       with:
+        configurationFile: ${{ runner.temp }}/renovate-config.js
         token: ${{ inputs.github-token }}
