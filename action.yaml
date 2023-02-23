@@ -13,6 +13,12 @@ inputs:
   artifactory-match-host:
     required: false
     description: A domain name, host name or base URL to match maven artifactory libraries with (see https://docs.renovatebot.com/configuration-options/#matchhost)
+  artifactory-registry-urls:
+    required: false
+    description: A comma separate list of extra registry URLs to tell renovate to use to find new versions of packages (e.g a jfrog registry)
+  artifactory-package-prefixes:
+    required: false
+    description: Package prefix to tell renovate to look for dependencies in the artifactory-registry-urls (e.g com.openTuro)
   docker-username:
     required: false
     description: Username to authenticate against docker hub
@@ -97,7 +103,9 @@ runs:
             if (
               process.env.RENOVATE_ARTIFACTORY_USERNAME &&
               process.env.RENOVATE_ARTIFACTORY_PASSWORD &&
-              process.env.RENOVATE_ARTIFACTORY_MATCH_HOST
+              process.env.RENOVATE_ARTIFACTORY_MATCH_HOST &&
+              process.env.RENOVATE_ARTIFACTORY_REGISTRY_URLS &&
+              process.env.RENOVATE_ARTIFACTORY_PACKAGE_PREFIXES
             ) {
               return {
                 hostRules: [
@@ -109,7 +117,17 @@ runs:
                   },
                 ],
                 name: "artifactory",
-                config: {},
+                config: {
+                  packageRules: [
+                    {
+                      matchDatasources: ["maven"],
+                      matchPackagePrefixes:
+                        process.env.RENOVATE_ARTIFACTORY_PACKAGE_PREFIXES.split(","),
+                      registryUrls:
+                        process.env.RENOVATE_ARTIFACTORY_REGISTRY_URLS.split(","),
+                    },
+                  ],
+                },
               };
             }
           }
@@ -177,7 +195,13 @@ runs:
             repositories: [`${process.env.RENOVATE_REPOSITORY_NAME}`],
             // Add any extra configuration a provider may need
             ...providers.reduce(
-              (rules, provider) => ({ ...rules, ...provider.config }),
+              (rules, provider) => ({
+                ...rules,
+                ...provider.config,
+                packageRules: (rules.packageRules || []).concat(
+                  ...provider.config.packageRules
+                ),
+              }),
               {}
             ),
           };
@@ -187,7 +211,9 @@ runs:
       env:
         LOG_LEVEL: ${{ inputs.log-level }}
         RENOVATE_ARTIFACTORY_MATCH_HOST: ${{ inputs.artifactory-match-host }}
+        RENOVATE_ARTIFACTORY_PACKAGE_PREFIXES: ${{ inputs.artifactory-package-prefixes }}
         RENOVATE_ARTIFACTORY_PASSWORD: ${{ inputs.artifactory-password }}
+        RENOVATE_ARTIFACTORY_REGISTRY_URLS: ${{ inputs.artifactory-registry-urls }}
         RENOVATE_ARTIFACTORY_USERNAME: ${{ inputs.artifactory-username }}
         RENOVATE_DRY_RUN: ${{ inputs.dry-run }}
         RENOVATE_DOCKERHUB_PASSWORD: ${{ inputs.docker-password }}

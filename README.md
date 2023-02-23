@@ -31,22 +31,24 @@ jobs:
 
 ## Inputs
 
-| parameter              | description                                                                                                                                        | required | default             |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------- |
-| dry-run                | Whether to run the action in dry-run mode                                                                                                          | `false`  | false               |
-| artifactory-username   | Username to authenticate against a maven artifactory                                                                                               | `false`  |                     |
-| artifactory-password   | Password to authenticate against a maven artifactory                                                                                               | `false`  |                     |
-| artifactory-match-host | A domain name, host name or base URL to match maven artifactory libraries with (see https://docs.renovatebot.com/configuration-options/#matchhost) | `false`  |                     |
-| docker-username        | Username to authenticate against docker hub                                                                                                        | `false`  |                     |
-| docker-password        | Password to authenticate against docker hub                                                                                                        | `false`  |                     |
-| github-token           | GitHub token that can checkout the repository as well as create tags/releases against it. e.g. 'secrets.GITHUB_TOKEN'                              | `false`  | ${{ github.token }} |
-| log-level              | Log level to use for renovate                                                                                                                      | `false`  | info                |
-| npm-token              | NPM token to use for authentication                                                                                                                | `false`  |                     |
-| npm-username           | Username to authenticate against the NPM registry                                                                                                  | `false`  |                     |
-| npm-password           | Password to authenticate against the NPM registry                                                                                                  | `false`  |                     |
-| npm-scope              | Scope of the packages to use the custom NPM authentication (e.g @open-turo)                                                                        | `false`  |                     |
-| npm-registry           | URL of the NPM registry to use the custom authentication for                                                                                       | `false`  |                     |
-| terraform-token        | Token to authenticate against terraform registry                                                                                                   | `false`  |                     |
+| parameter                    | description                                                                                                                                        | required | default             |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------- |
+| dry-run                      | Whether to run the action in dry-run mode                                                                                                          | `false`  | false               |
+| artifactory-username         | Username to authenticate against a maven artifactory                                                                                               | `false`  |                     |
+| artifactory-password         | Password to authenticate against a maven artifactory                                                                                               | `false`  |                     |
+| artifactory-match-host       | A domain name, host name or base URL to match maven artifactory libraries with (see https://docs.renovatebot.com/configuration-options/#matchhost) | `false`  |                     |
+| artifactory-registry-urls    | A comma separate list of extra registry URLs to tell renovate to use to find new versions of packages (e.g a jfrog registry)                       | `false`  |                     |
+| artifactory-package-prefixes | Package prefix to tell renovate to look for dependencies in the artifactory-registry-urls (e.g com.openTuro)                                       | `false`  |                     |
+| docker-username              | Username to authenticate against docker hub                                                                                                        | `false`  |                     |
+| docker-password              | Password to authenticate against docker hub                                                                                                        | `false`  |                     |
+| github-token                 | GitHub token that can checkout the repository as well as create tags/releases against it. e.g. 'secrets.GITHUB_TOKEN'                              | `false`  | ${{ github.token }} |
+| log-level                    | Log level to use for renovate                                                                                                                      | `false`  | info                |
+| npm-token                    | NPM token to use for authentication                                                                                                                | `false`  |                     |
+| npm-username                 | Username to authenticate against the NPM registry                                                                                                  | `false`  |                     |
+| npm-password                 | Password to authenticate against the NPM registry                                                                                                  | `false`  |                     |
+| npm-scope                    | Scope of the packages to use the custom NPM authentication (e.g @open-turo)                                                                        | `false`  |                     |
+| npm-registry                 | URL of the NPM registry to use the custom authentication for                                                                                       | `false`  |                     |
+| terraform-token              | Token to authenticate against terraform registry                                                                                                   | `false`  |                     |
 
 ## Runs
 
