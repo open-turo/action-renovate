@@ -210,6 +210,7 @@ runs:
       uses: renovatebot/github-action@v34.159.2
       env:
         LOG_LEVEL: ${{ inputs.log-level }}
+        NPM_AUTH_TOKEN: ${{ inputs.npm-token }}
         RENOVATE_ARTIFACTORY_MATCH_HOST: ${{ inputs.artifactory-match-host }}
         RENOVATE_ARTIFACTORY_PACKAGE_PREFIXES: ${{ inputs.artifactory-package-prefixes }}
         RENOVATE_ARTIFACTORY_PASSWORD: ${{ inputs.artifactory-password }}
@@ -227,4 +228,6 @@ runs:
         RENOVATE_TERRAFORM_TOKEN: ${{ inputs.terraform-token }}
       with:
         configurationFile: ${{ runner.temp }}/renovate-config.js
+        # We allowlist NPM_AUTH_TOKEN so that .yarnrc.yml can use NPM_AUTH_TOKEN for private scope authentication
+        env-regex: "^(?:RENOVATE_\\w+|LOG_LEVEL|GITHUB_COM_TOKEN|NODE_OPTIONS|NPM_AUTH_TOKEN)$"
         token: ${{ inputs.github-token }}
