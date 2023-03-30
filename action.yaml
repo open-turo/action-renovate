@@ -227,4 +227,5 @@ runs:
         RENOVATE_TERRAFORM_TOKEN: ${{ inputs.terraform-token }}
       with:
         configurationFile: ${{ runner.temp }}/renovate-config.js
+        renovate-version: 35
         token: ${{ inputs.github-token }}
