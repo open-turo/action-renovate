@@ -29,6 +29,10 @@ inputs:
     required: true
     description: GitHub token that can checkout the repository as well as create tags/releases against it. e.g. 'secrets.GITHUB_TOKEN'
     default: ${{ github.token }}
+  git-ignored-authors:
+    required: false
+    description: Additional Git authors which are ignored by Renovate. Must conform to RFC5322
+    default: []
   log-level:
     required: false
     description: Log level to use for renovate
@@ -218,6 +222,7 @@ runs:
         RENOVATE_DRY_RUN: ${{ inputs.dry-run }}
         RENOVATE_DOCKERHUB_PASSWORD: ${{ inputs.docker-password }}
         RENOVATE_DOCKERHUB_USERNAME: ${{ inputs.docker-username }}
+        RENOVATE_GIT_IGNORED_AUTHORS: ${{ inputs.git-ignored-authors }}
         RENOVATE_NPM_PASSWORD: ${{ inputs.npm-password }}
         RENOVATE_NPM_REGISTRY: ${{ inputs.npm-registry }}
         RENOVATE_NPM_SCOPE: ${{ inputs.npm-scope }}
