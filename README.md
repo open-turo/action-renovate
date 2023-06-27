@@ -33,7 +33,8 @@ jobs:
 
 | parameter                    | description                                                                                                                                        | required | default             |
 | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------------------- |
-| dry-run                      | Whether to run the action in dry-run mode                                                                                                          | `false`  | false               |
+| dry-run                      | Whether to run the action in dry-run mode                                                                                                          | `false`  | `false`             |
+| checkout-repo                | Perform checkout as first step of action                                                                                                           | `false`  | `true`              |
 | artifactory-username         | Username to authenticate against a maven artifactory                                                                                               | `false`  |                     |
 | artifactory-password         | Password to authenticate against a maven artifactory                                                                                               | `false`  |                     |
 | artifactory-match-host       | A domain name, host name or base URL to match maven artifactory libraries with (see https://docs.renovatebot.com/configuration-options/#matchhost) | `false`  |                     |
@@ -42,7 +43,7 @@ jobs:
 | docker-username              | Username to authenticate against docker hub                                                                                                        | `false`  |                     |
 | docker-password              | Password to authenticate against docker hub                                                                                                        | `false`  |                     |
 | github-token                 | GitHub token that can checkout the repository as well as create tags/releases against it. e.g. 'secrets.GITHUB_TOKEN'                              | `false`  | ${{ github.token }} |
-| git-ignored-authors          | Additional Git authors which are ignored by Renovate. Must conform to RFC5322                                                                      | false    | []                  |
+| git-ignored-authors          | Additional Git authors which are ignored by Renovate. Must conform to RFC5322                                                                      | `false`  | []                  |
 | log-level                    | Log level to use for renovate                                                                                                                      | `false`  | info                |
 | npm-token                    | NPM token to use for authentication                                                                                                                | `false`  |                     |
 | npm-username                 | Username to authenticate against the NPM registry                                                                                                  | `false`  |                     |

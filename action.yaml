@@ -4,6 +4,10 @@ inputs:
   dry-run:
     required: false
     description: Whether to run the action in dry-run mode
+  checkout-repo:
+    required: false
+    description: Perform checkout as first step of action
+    default: "true"
   artifactory-username:
     required: false
     description: Username to authenticate against a maven artifactory
@@ -61,6 +65,7 @@ runs:
   steps:
     - name: Checkout
       uses: actions/checkout@v3
+      if: inputs.checkout-repo == 'true'
     - name: Create renovate config
       shell: bash
       run: |
