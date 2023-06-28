@@ -36,7 +36,7 @@ inputs:
   git-ignored-authors:
     required: false
     description: Additional Git authors which are ignored by Renovate. Must conform to RFC5322
-    default: []
+    default: "[]"
   log-level:
     required: false
     description: Log level to use for renovate
