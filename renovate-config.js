@@ -119,7 +119,7 @@ const providers = [
 ].filter((provider) => provider !== undefined);
 
 console.log(
-  `Enabled providers: [${providers.map(({ name }) => name).join(", ")}]`
+  `Enabled providers: [${providers.map(({ name }) => name).join(", ")}]`,
 );
 
 module.exports = {
@@ -136,9 +136,9 @@ module.exports = {
       ...rules,
       ...provider.config,
       packageRules: (rules.packageRules || []).concat(
-        ...(provider.config.packageRules || [])
+        ...(provider.config.packageRules || []),
       ),
     }),
-    {}
+    {},
   ),
 };
