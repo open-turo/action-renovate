@@ -68,6 +68,8 @@ runs:
     - name: Renovatebot
       uses: renovatebot/github-action@v40.0.2
       env:
+        ORG_GRADLE_PROJECT_artifactoryAuthToken: ${{ inputs.artifactory-password }}
+        ORG_GRADLE_PROJECT_artifactoryUsername: ${{ inputs.artifactory-username }}
         LOG_LEVEL: ${{ inputs.log-level }}
         RENOVATE_ARTIFACTORY_MATCH_HOST: ${{ inputs.artifactory-match-host }}
         RENOVATE_ARTIFACTORY_PACKAGE_PREFIXES: ${{ inputs.artifactory-package-prefixes }}

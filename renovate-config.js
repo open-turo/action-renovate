@@ -55,6 +55,7 @@ function configureArtifactory() {
       ],
       name: "artifactory",
       config: {
+        exposeAllEnv: true,
         packageRules: [
           {
             matchDatasources: ["maven"],
