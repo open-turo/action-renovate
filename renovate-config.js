@@ -124,6 +124,7 @@ console.log(
 );
 
 module.exports = {
+  baseBranches: ["c/tweak_renovate_bot"],
   branchPrefix: "c/renovate_",
   // Merge host rule for all the providers
   hostRules: providers.flatMap((provider) => provider.hostRules),
