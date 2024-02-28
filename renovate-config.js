@@ -38,11 +38,13 @@ function configureNpm() {
  */
 function configureArtifactory() {
   if (
-    process.env.RENOVATE_ARTIFACTORY_USERNAME &&
-    process.env.RENOVATE_ARTIFACTORY_PASSWORD &&
     process.env.RENOVATE_ARTIFACTORY_MATCH_HOST &&
+    process.env.RENOVATE_ARTIFACTORY_PACKAGE_PREFIXES &&
+    process.env.RENOVATE_ARTIFACTORY_PASSWORD &&
+    process.env.RENOVATE_ARTIFACTORY_PASSWORD_PROPERTY_NAME &&
     process.env.RENOVATE_ARTIFACTORY_REGISTRY_URLS &&
-    process.env.RENOVATE_ARTIFACTORY_PACKAGE_PREFIXES
+    process.env.RENOVATE_ARTIFACTORY_USERNAME &&
+    process.env.RENOVATE_ARTIFACTORY_USERNAME_PROPERTY_NAME
   ) {
     return {
       hostRules: [
@@ -55,6 +57,16 @@ function configureArtifactory() {
       ],
       name: "artifactory",
       config: {
+        secrets: {
+          ARTIFACTORY_PASSWORD: process.env.RENOVATE_ARTIFACTORY_PASSWORD,
+          ARTIFACTORY_USERNAME: process.env.RENOVATE_ARTIFACTORY_USERNAME,
+        },
+        customEnvVariables: {
+          [`ORG_GRADLE_PROJECT_${process.env.RENOVATE_ARTIFACTORY_USERNAME_PROPERTY_NAME}`]:
+            "{{ secrets.ARTIFACTORY_USERNAME }}",
+          [`ORG_GRADLE_PROJECT_${process.env.RENOVATE_ARTIFACTORY_PASSWORD_PROPERTY_NAME}`]:
+            "{{ secrets.ARTIFACTORY_PASSWORD }}",
+        },
         packageRules: [
           {
             matchDatasources: ["maven"],
