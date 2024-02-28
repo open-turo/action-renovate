@@ -14,6 +14,14 @@ inputs:
   artifactory-password:
     required: false
     description: Password to authenticate against a maven artifactory
+  artifactory-username-property-name:
+    required: false
+    description: Name of the gradle property to use for the artifactory username
+    default: artifactoryUsername
+  artifactory-password-property-name:
+    required: false
+    description: Name of the gradle property to use for the artifactory password
+    default: artifactoryAuthToken
   artifactory-match-host:
     required: false
     description: A domain name, host name or base URL to match maven artifactory libraries with (see https://docs.renovatebot.com/configuration-options/#matchhost)
@@ -72,8 +80,10 @@ runs:
         RENOVATE_ARTIFACTORY_MATCH_HOST: ${{ inputs.artifactory-match-host }}
         RENOVATE_ARTIFACTORY_PACKAGE_PREFIXES: ${{ inputs.artifactory-package-prefixes }}
         RENOVATE_ARTIFACTORY_PASSWORD: ${{ inputs.artifactory-password }}
+        RENOVATE_ARTIFACTORY_PASSWORD_PROPERTY_NAME: ${{ inputs.artifactory-password-property-name }}
         RENOVATE_ARTIFACTORY_REGISTRY_URLS: ${{ inputs.artifactory-registry-urls }}
         RENOVATE_ARTIFACTORY_USERNAME: ${{ inputs.artifactory-username }}
+        RENOVATE_ARTIFACTORY_USERNAME_PROPERTY_NAME: ${{ inputs.artifactory-username-property-name }}
         RENOVATE_DRY_RUN: ${{ inputs.dry-run }}
         RENOVATE_DOCKERHUB_PASSWORD: ${{ inputs.docker-password }}
         RENOVATE_DOCKERHUB_USERNAME: ${{ inputs.docker-username }}
