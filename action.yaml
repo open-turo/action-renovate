@@ -1,5 +1,7 @@
 name: GitHub Action Renovatebot
-description: GitHub Action that runs renovatebot with a very opinionated runner configuration
+description:
+  GitHub Action that runs renovatebot with a very opinionated runner configuration.  It supports
+  configuring it to talk to private registries for Artifactory, Docker, NPM and Terraform.
 inputs:
   dry-run:
     required: false
