@@ -1,19 +1,11 @@
-# GitHub Action Renovatebot
+# Github Action Renovatebot
 
 <!-- prettier-ignore-start -->
-<!-- action-docs-description source="action.yaml" -->
+<!-- action-docs-all source="action.yaml" project="open-turo/action-renovate" version="v1" -->
 ## Description
 
 GitHub Action that runs renovatebot with a very opinionated runner configuration.  It supports configuring it to talk to private registries for Artifactory, Docker, NPM and Terraform.
-<!-- action-docs-description source="action.yaml" -->
-## Description
 
-GitHub Action that lints a Terraform based repository via [action-pre-commit](https://github.com/open-turo/action-pre-commit)
-<!-- action-docs-description -->
-<!-- prettier-ignore-end -->
-
-<!-- prettier-ignore-start -->
-<!-- action-docs-inputs source="action.yaml" -->
 ## Inputs
 
 | name | description | required | default |
@@ -40,31 +32,151 @@ GitHub Action that lints a Terraform based repository via [action-pre-commit](ht
 | `npm-scope` | <p>Scope of the packages to use the custom NPM authentication (e.g @open-turo)</p> | `false` | `""` |
 | `npm-registry` | <p>URL of the NPM registry to use the custom authentication for</p> | `false` | `""` |
 | `terraform-token` | <p>Token to authenticate against terraform registry</p> | `false` | `""` |
-<!-- action-docs-inputs source="action.yaml" -->
-## Inputs
 
-| parameter | description | required | default |
-| --- | --- | --- | --- |
-| checkout-repo | Perform checkout as first step of action | `false` | true |
-| github-token | GitHub token that can checkout the consumer repository. e.g. 'secrets.GITHUB_TOKEN' | `true` |  |
-<!-- action-docs-inputs -->
 
-<!-- action-docs-outputs source="action.yaml" -->
-
-<!-- action-docs-outputs source="action.yaml" -->
-
-<!-- action-docs-outputs -->
-
-<!-- action-docs-runs source="action.yaml" -->
 ## Runs
 
 This action is a `composite` action.
-<!-- action-docs-runs source="action.yaml" -->
-## Runs
 
-This action is a `composite` action.
-<!-- action-docs-runs -->
+## Usage
 
-<!-- action-docs-usage source="action.yaml"  -->
-<!-- action-docs-usage -->
+```yaml
+- uses: open-turo/action-renovate@v1
+  with:
+    dry-run:
+    # Whether to run the action in dry-run mode
+    #
+    # Required: false
+    # Default: ""
+
+    checkout-repo:
+    # Perform checkout as first step of action
+    #
+    # Required: false
+    # Default: true
+
+    artifactory-username:
+    # Username to authenticate against a maven artifactory
+    #
+    # Required: false
+    # Default: ""
+
+    artifactory-password:
+    # Password to authenticate against a maven artifactory
+    #
+    # Required: false
+    # Default: ""
+
+    artifactory-username-property-name:
+    # Name of the gradle property to use for the artifactory username
+    #
+    # Required: false
+    # Default: artifactoryUsername
+
+    artifactory-password-property-name:
+    # Name of the gradle property to use for the artifactory password
+    #
+    # Required: false
+    # Default: artifactoryAuthToken
+
+    artifactory-match-host:
+    # A domain name, host name or base URL to match maven artifactory libraries with (see https://docs.renovatebot.com/configuration-options/#matchhost)
+    #
+    # Required: false
+    # Default: ""
+
+    artifactory-registry-urls:
+    # A comma separate list of extra registry URLs to tell renovate to use to find new versions of packages (e.g a jfrog registry)
+    #
+    # Required: false
+    # Default: ""
+
+    artifactory-package-prefixes:
+    # Package prefix to tell renovate to look for dependencies in the artifactory-registry-urls (e.g com.openTuro)
+    #
+    # Required: false
+    # Default: ""
+
+    env-regex:
+    # Override the environment variables which will be passsed into the renovate container. Defaults to `^(?:RENOVATE_\\w+|LOG_LEVEL|GITHUB_COM_TOKEN|NODE_OPTIONS|(?:HTTPS?|NO)_PROXY|(?:https?|no)_proxy)# Github Action Renovatebot
+
+<!-- prettier-ignore-start -->
+
+    #
+    # Required: false
+    # Default: ""
+
+    extra-config:
+    # Extra configuration to pass to renovate. It has to be a valid JSON object. Use with caution as this could override the default configuration created by this action
+    #
+    # Required: false
+    # Default: {}
+
+    docker-username:
+    # Username to authenticate against docker hub
+    #
+    # Required: false
+    # Default: ""
+
+    docker-password:
+    # Password to authenticate against docker hub
+    #
+    # Required: false
+    # Default: ""
+
+    github-token:
+    # GitHub token that can checkout the repository as well as create tags/releases against it. e.g. 'secrets.GITHUB_TOKEN'
+    #
+    # Required: true
+    # Default: ${{ github.token }}
+
+    git-ignored-authors:
+    # Additional Git authors which are ignored by Renovate. Must conform to RFC5322
+    #
+    # Required: false
+    # Default: []
+
+    log-level:
+    # Log level to use for renovate
+    #
+    # Required: false
+    # Default: info
+
+    npm-token:
+    # NPM token to use for authentication
+    #
+    # Required: false
+    # Default: ""
+
+    npm-username:
+    # Username to authenticate against the NPM registry
+    #
+    # Required: false
+    # Default: ""
+
+    npm-password:
+    # Password to authenticate against the NPM registry
+    #
+    # Required: false
+    # Default: ""
+
+    npm-scope:
+    # Scope of the packages to use the custom NPM authentication (e.g @open-turo)
+    #
+    # Required: false
+    # Default: ""
+
+    npm-registry:
+    # URL of the NPM registry to use the custom authentication for
+    #
+    # Required: false
+    # Default: ""
+
+    terraform-token:
+    # Token to authenticate against terraform registry
+    #
+    # Required: false
+    # Default: ""
+```
+<!-- action-docs-all source="action.yaml" project="open-turo/action-renovate" version="v1" -->
 <!-- prettier-ignore-end -->
