@@ -29,4 +29,4 @@ repos:
         name: update-action-readme
         entry: ./script/update-action-readme
         language: script
-        files: '.*/action\.yaml$'
+        files: 'action\.yaml$'
