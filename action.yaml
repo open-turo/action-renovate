@@ -33,6 +33,13 @@ inputs:
   artifactory-package-prefixes:
     required: false
     description: Package prefix to tell renovate to look for dependencies in the artifactory-registry-urls (e.g com.openTuro)
+  env-regex:
+    description: Override the environment variables which will be passsed into the renovate container. Defaults to `^(?:RENOVATE_\\w+|LOG_LEVEL|GITHUB_COM_TOKEN|NODE_OPTIONS|(?:HTTPS?|NO)_PROXY|(?:https?|no)_proxy)$`
+    required: false
+  extra-config:
+    required: false
+    description: Extra configuration to pass to renovate. It has to be a valid JSON object. Use with caution as this could override the default configuration created by this action
+    default: "{}"
   docker-username:
     required: false
     description: Username to authenticate against docker hub
@@ -86,6 +93,7 @@ runs:
         RENOVATE_ARTIFACTORY_REGISTRY_URLS: ${{ inputs.artifactory-registry-urls }}
         RENOVATE_ARTIFACTORY_USERNAME: ${{ inputs.artifactory-username }}
         RENOVATE_ARTIFACTORY_USERNAME_PROPERTY_NAME: ${{ inputs.artifactory-username-property-name }}
+        RENOVATE_EXTRA_CONFIG: ${{ inputs.extra-config }}
         RENOVATE_DRY_RUN: ${{ inputs.dry-run }}
         RENOVATE_DOCKERHUB_PASSWORD: ${{ inputs.docker-password }}
         RENOVATE_DOCKERHUB_USERNAME: ${{ inputs.docker-username }}
@@ -99,5 +107,6 @@ runs:
         RENOVATE_TERRAFORM_TOKEN: ${{ inputs.terraform-token }}
       with:
         configurationFile: ${{ github.action_path }}/renovate-config.js
+        env-regex: ${{ inputs.env-regex }}
         renovate-version: 38
         token: ${{ inputs.github-token }}
