@@ -99,5 +99,5 @@ runs:
         RENOVATE_TERRAFORM_TOKEN: ${{ inputs.terraform-token }}
       with:
         configurationFile: ${{ github.action_path }}/renovate-config.js
-        renovate-version: 35
+        renovate-version: 38
         token: ${{ inputs.github-token }}
