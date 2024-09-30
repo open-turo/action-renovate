@@ -122,6 +122,24 @@ function configureDocker() {
   }
 }
 
+/**
+ * Parse the extra configuration from the environment variable. If the environment variable
+ * is not set or it can't be parsed, return an empty object.
+ * @returns {{}|any}
+ */
+function getExtraConfig() {
+  if (process.env.RENOVATE_EXTRA_CONFIG) {
+    try {
+      return JSON.parse(process.env.RENOVATE_EXTRA_CONFIG);
+    } catch (e) {
+      console.error(
+        `Failed to parse RENOVATE_EXTRA_CONFIG environment variable: ${e.message}`,
+      );
+    }
+  }
+  return {};
+}
+
 // Only keep provider configuration that is set
 const providers = [
   configureArtifactory(),
@@ -138,7 +156,6 @@ module.exports = {
   branchPrefix: "c/renovate_",
   // Merge host rule for all the providers
   hostRules: providers.flatMap((provider) => provider.hostRules),
-  logLevel: "info",
   onboarding: false,
   // Only run renovate against the repository the action is running on
   repositories: [`${process.env.RENOVATE_REPOSITORY_NAME}`],
@@ -153,4 +170,5 @@ module.exports = {
     }),
     {},
   ),
+  ...getExtraConfig(),
 };
