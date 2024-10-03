@@ -93,6 +93,10 @@ function configureTerraform() {
           hostType: "terraform-module",
           token: process.env.RENOVATE_TERRAFORM_TOKEN,
         },
+        {
+          matchHost: "app.terraform.io",
+          token: process.env.RENOVATE_TERRAFORM_TOKEN,
+        },
       ],
       name: "terraform",
       config: {},
