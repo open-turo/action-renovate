@@ -15,7 +15,7 @@ function configureNpm() {
       hostRules: [
         {
           hostType: "npm",
-          matchHost: process.env.RENOVATE_NPM_HOST,
+          matchHost: process.env.RENOVATE_NPM_REGISTRY,
           username: process.env.RENOVATE_NPM_USERNAME,
           password: process.env.RENOVATE_NPM_PASSWORD,
         },
