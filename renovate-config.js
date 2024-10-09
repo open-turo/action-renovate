@@ -4,13 +4,7 @@
  * that authenticates against the same registry for the specified scope.
  */
 function configureNpm() {
-  if (
-    process.env.RENOVATE_NPM_USERNAME &&
-    process.env.RENOVATE_NPM_PASSWORD &&
-    process.env.RENOVATE_NPM_AUTH_TOKEN &&
-    process.env.RENOVATE_NPM_REGISTRY &&
-    process.env.RENOVATE_NPM_SCOPE
-  ) {
+  if (process.env.RENOVATE_NPM_USERNAME && process.env.RENOVATE_NPM_PASSWORD) {
     return {
       hostRules: [
         {
@@ -21,6 +15,16 @@ function configureNpm() {
         },
       ],
       name: "npm",
+    };
+  }
+  if (
+    process.env.RENOVATE_NPM_AUTH_TOKEN &&
+    process.env.RENOVATE_NPM_REGISTRY &&
+    process.env.RENOVATE_NPM_SCOPE
+  ) {
+    return {
+      hostRules: [],
+      name: "npmrc",
       config: {
         npmrc: [
           `${process.env.RENOVATE_NPM_SCOPE}:registry=${process.env.RENOVATE_NPM_REGISTRY}`,
