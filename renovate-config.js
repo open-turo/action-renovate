@@ -14,6 +14,7 @@ function configureNpm() {
           password: process.env.RENOVATE_NPM_PASSWORD,
         },
       ],
+      config: {},
       name: "npm",
     };
   }
