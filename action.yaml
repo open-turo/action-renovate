@@ -108,5 +108,4 @@ runs:
       with:
         configurationFile: ${{ github.action_path }}/renovate-config.js
         env-regex: ${{ inputs.env-regex }}
-        renovate-version: 38
         token: ${{ inputs.github-token }}
