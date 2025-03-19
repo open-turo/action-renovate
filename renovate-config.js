@@ -121,6 +121,7 @@ function configureDocker() {
       hostRules: [
         {
           hostType: "docker",
+          hostname: "index.docker.io",
           username: process.env.RENOVATE_DOCKERHUB_USERNAME,
           password: process.env.RENOVATE_DOCKERHUB_PASSWORD,
         },
