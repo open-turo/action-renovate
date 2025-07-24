@@ -46,6 +46,11 @@ inputs:
   docker-password:
     required: false
     description: Password to authenticate against docker hub
+  docker-volumes:
+    description: |
+      Docker volume mounts. Default to /tmp:/tmp
+    default: /tmp:/tmp
+    required: false
   github-token:
     required: true
     description: GitHub token that can checkout the repository as well as create tags/releases against it. e.g. 'secrets.GITHUB_TOKEN'
@@ -107,5 +112,6 @@ runs:
         RENOVATE_TERRAFORM_TOKEN: ${{ inputs.terraform-token }}
       with:
         configurationFile: ${{ github.action_path }}/renovate-config.js
+        docker-volumes: ${{ inputs.docker-volumes }}
         env-regex: ${{ inputs.env-regex }}
         token: ${{ inputs.github-token }}
