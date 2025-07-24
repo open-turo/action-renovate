@@ -23,6 +23,7 @@ GitHub Action that runs renovatebot with a very opinionated runner configuration
 | `extra-config` | <p>Extra configuration to pass to renovate. It has to be a valid JSON object. Use with caution as this could override the default configuration created by this action</p> | `false` | `{}` |
 | `docker-username` | <p>Username to authenticate against docker hub</p> | `false` | `""` |
 | `docker-password` | <p>Password to authenticate against docker hub</p> | `false` | `""` |
+| `docker-volumes` | <p>Docker volume mounts. Default to /tmp:/tmp</p> | `false` | `/tmp:/tmp` |
 | `github-token` | <p>GitHub token that can checkout the repository as well as create tags/releases against it. e.g. 'secrets.GITHUB_TOKEN'</p> | `true` | `${{ github.token }}` |
 | `git-ignored-authors` | <p>Additional Git authors which are ignored by Renovate. Must conform to RFC5322</p> | `false` | `[]` |
 | `log-level` | <p>Log level to use for renovate</p> | `false` | `info` |
@@ -123,6 +124,12 @@ This action is a `composite` action.
     #
     # Required: false
     # Default: ""
+
+    docker-volumes:
+    # Docker volume mounts. Default to /tmp:/tmp
+    #
+    # Required: false
+    # Default: /tmp:/tmp
 
     github-token:
     # GitHub token that can checkout the repository as well as create tags/releases against it. e.g. 'secrets.GITHUB_TOKEN'
