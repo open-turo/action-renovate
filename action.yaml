@@ -88,7 +88,7 @@ runs:
       uses: actions/checkout@v5
       if: inputs.checkout-repo == 'true'
     - name: Renovatebot
-      uses: renovatebot/github-action@v43.0.10
+      uses: renovatebot/github-action@v43.0.11
       env:
         LOG_LEVEL: ${{ inputs.log-level }}
         RENOVATE_ARTIFACTORY_MATCH_HOST: ${{ inputs.artifactory-match-host }}
