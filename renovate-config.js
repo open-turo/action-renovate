@@ -64,11 +64,10 @@ function configureArtifactory() {
       config: {
         secrets: {
           ARTIFACTORY_PASSWORD: process.env.RENOVATE_ARTIFACTORY_PASSWORD,
-          ARTIFACTORY_USERNAME: process.env.RENOVATE_ARTIFACTORY_USERNAME,
         },
         customEnvVariables: {
           [`ORG_GRADLE_PROJECT_${process.env.RENOVATE_ARTIFACTORY_USERNAME_PROPERTY_NAME}`]:
-            "{{ secrets.ARTIFACTORY_USERNAME }}",
+            process.env.RENOVATE_ARTIFACTORY_USERNAME,
           [`ORG_GRADLE_PROJECT_${process.env.RENOVATE_ARTIFACTORY_PASSWORD_PROPERTY_NAME}`]:
             "{{ secrets.ARTIFACTORY_PASSWORD }}",
         },
