@@ -32,6 +32,12 @@ function configureNpm() {
           `${process.env.RENOVATE_NPM_REGISTRY}:_auth=${process.env.RENOVATE_NPM_AUTH_TOKEN}`,
           `${process.env.RENOVATE_NPM_REGISTRY}:always-auth=true`,
         ].join("\n"),
+        secrets: {
+          NPM_AUTH_TOKEN: process.env.RENOVATE_NPM_AUTH_TOKEN,
+        },
+        customEnvVariables: {
+          NPM_AUTH_TOKEN: "{{ secrets.NPM_AUTH_TOKEN }}",
+        },
       },
     };
   }
