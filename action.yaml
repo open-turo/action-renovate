@@ -29,10 +29,10 @@ inputs:
     description: A domain name, host name or base URL to match maven artifactory libraries with (see https://docs.renovatebot.com/configuration-options/#matchhost)
   artifactory-registry-urls:
     required: false
-    description: A comma separate list of extra registry URLs to tell renovate to use to find new versions of packages (e.g a jfrog registry)
+    description: A comma separate list of extra registry URLs to tell renovate to use to find new versions of packages (e.g. a jfrog registry)
   artifactory-package-prefixes:
     required: false
-    description: Package prefix to tell renovate to look for dependencies in the artifactory-registry-urls (e.g com.openTuro)
+    description: Package prefix to tell renovate to look for dependencies in the artifactory-registry-urls (e.g. com.openTuro)
   env-regex:
     description: Override the environment variables which will be passsed into the renovate container. Defaults to `^(?:RENOVATE_\\w+|LOG_LEVEL|GITHUB_COM_TOKEN|NODE_OPTIONS|(?:HTTPS?|NO)_PROXY|(?:https?|no)_proxy)$`
     required: false
@@ -74,7 +74,7 @@ inputs:
     description: Password to authenticate against the NPM registry
   npm-scope:
     required: false
-    description: Scope of the packages to use the custom NPM authentication (e.g @open-turo)
+    description: Scope of the packages to use the custom NPM authentication (e.g. @open-turo)
   npm-registry:
     required: false
     description: URL of the NPM registry to use the custom authentication for
